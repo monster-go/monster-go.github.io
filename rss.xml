@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
     <channel>
-        <title>HelloT 博客</title>
+        <title>monster-bi 博客</title>
         <link>Homepage link</link>
         <description>工作经验积累</description>
-        <lastBuildDate>Thu, 26 Apr 2018 11:47:54 +0800</lastBuildDate>
+        <lastBuildDate>Thu, 26 Apr 2018 17:17:17 +0800</lastBuildDate>
         <language>zh-cn</language>
         
         <item>
             <title>SSH(Secure SHell protocol) 安全外壳协议</title>
             <link>Homepage link/articles/1-post.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
             <guid>Homepage link/articles/1-post.html</guid>
-            <author>GugoTianFei@gmail.com 王天飞</author>
+            <author>GugoTianFei@gmail.com monster</author>
             <pubDate>Wed, 06 Aug 2014 00:00:00 +0800</pubDate>
             <description>&lt;h1 id=&quot;联机加密技术简介&quot;&gt;联机加密技术简介&lt;/h1&gt;
 &lt;pre&gt;什么是『数据加密』呢？简单的说，就是将人们看的懂得原始电子数据，经过一些运算，让这些数据变成没有意义的乱码 (至少对人类来说)，然后再让这个咚咚在网络上面传输，而当用户想要查阅这个数据时，再透过解密运算， 将这些咚咚反推出原始的电子数据。由于这些数据已经被重新处理过，所以，即使数据在因特网上被 cracker 监听而窃取，他们也不容易就推算得出来原始资料内容的。
@@ -45,13 +45,14 @@
             <title>Git 常用命令速查表</title>
             <link>Homepage link/articles/2-post.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
             <guid>Homepage link/articles/2-post.html</guid>
-            <author>GugoTianFei@gmail.com 王天飞</author>
+            <author>GugoTianFei@gmail.com monster</author>
             <pubDate>Thu, 07 Aug 2014 00:00:00 +0800</pubDate>
             <description>&lt;h1 id=&quot;创建版本库&quot;&gt;创建版本库&lt;/h1&gt;
-&lt;pre&gt;$ git clone &lt;url&gt; #克隆远程版本库
+&lt;pre class=&quot;prettyprint linenums lang-bash&quot;&gt;$ git clone &lt;url&gt; #克隆远程版本库
 $ git init #初始化本地版本库
-&lt;/pre&gt;&lt;h1 id=&quot;修改和提交&quot;&gt;修改和提交&lt;/h1&gt;
-&lt;pre&gt;$ git status #查看状态
+&lt;/pre&gt;
+&lt;h1 id=&quot;修改和提交&quot;&gt;修改和提交&lt;/h1&gt;
+&lt;pre class=&quot;prettyprint linenums lang-bash&quot;&gt;$ git status #查看状态
 $ git diff #查看变更内容
 $ git add . #跟踪所有改动过的文件
 $ git add &lt;file&gt; #跟踪指定的文件
@@ -60,29 +61,32 @@ $ git rm &lt;file&gt; #删除文件
 $ git rm --cached &lt;file&gt; #停止跟踪文件但不删除
 $ git commit -m “commit message” #提交所有更新过的文件
 $ git commit --amend #修改最后一次提交
-&lt;/pre&gt;&lt;h1 id=&quot;查看提交历史&quot;&gt;查看提交历史&lt;/h1&gt;
-&lt;pre&gt;$ git log #查看提交历史
-
+&lt;/pre&gt;
+&lt;h1 id=&quot;查看提交历史&quot;&gt;查看提交历史&lt;/h1&gt;
+&lt;pre class=&quot;prettyprint linenums lang-bash&quot;&gt;$ git log #查看提交历史
 $ git log -p &lt;file&gt; #查看指定文件的提交历史
-
 $ git blame &lt;file&gt; #以列表方式查看指定文件的提交历史
-&lt;/pre&gt;&lt;h1 id=&quot;撤消&quot;&gt;撤消&lt;/h1&gt;
-&lt;pre&gt;$ git reset --hard HEAD #撤消工作目录中所有未提交文件的修改内容
+&lt;/pre&gt;
+&lt;h1 id=&quot;撤消&quot;&gt;撤消&lt;/h1&gt;
+&lt;pre class=&quot;prettyprint linenums lang-bash&quot;&gt;$ git reset --hard HEAD #撤消工作目录中所有未提交文件的修改内容
 $ git checkout HEAD &lt;file&gt; #撤消指定的未提交文件的修改内容
 $ git revert &lt;commit&gt; #撤消指定的提交
-&lt;/pre&gt;&lt;h1 id=&quot;分支与标签&quot;&gt;分支与标签&lt;/h1&gt;
-&lt;pre&gt;$ git branch #显示所有本地分支
+&lt;/pre&gt;
+&lt;h1 id=&quot;分支与标签&quot;&gt;分支与标签&lt;/h1&gt;
+&lt;pre class=&quot;prettyprint linenums lang-bash&quot;&gt;$ git branch #显示所有本地分支
 $ git checkout &lt;branch/tag&gt; #切换到指定分支或标签
 $ git branch &lt;new-branch&gt; #创建新分支
 $ git branch -d &lt;branch&gt; #删除本地分支
 $ git tag #列出所有本地标签
 $ git tag &lt;tagname&gt; #基于最新提交创建标签
 $ git tag -d &lt;tagname&gt; #删除标签
-&lt;/pre&gt;&lt;h1 id=&quot;合并与衍合&quot;&gt;合并与衍合&lt;/h1&gt;
-&lt;pre&gt;$ git merge &lt;branch&gt; #合并指定分支到当前分支
+&lt;/pre&gt;
+&lt;h1 id=&quot;合并与衍合&quot;&gt;合并与衍合&lt;/h1&gt;
+&lt;pre class=&quot;prettyprint linenums lang-bash&quot;&gt;$ git merge &lt;branch&gt; #合并指定分支到当前分支
 $ git rebase &lt;branch&gt; #衍合指定分支到当前分支
-&lt;/pre&gt;&lt;h1 id=&quot;远程操作&quot;&gt;远程操作&lt;/h1&gt;
-&lt;pre&gt;$ git remote -v #查看远程版本库信息
+&lt;/pre&gt;
+&lt;h1 id=&quot;远程操作&quot;&gt;远程操作&lt;/h1&gt;
+&lt;pre class=&quot;prettyprint linenums lang-bash&quot;&gt;$ git remote -v #查看远程版本库信息
 $ git remote show &lt;remote&gt; #查看指定远程版本库信息
 $ git remote add &lt;remote&gt; &lt;url&gt; #添加远程版本库
 $ git fetch &lt;remote&gt; #从远程库获取代码
@@ -90,14 +94,15 @@ $ git pull &lt;remote&gt; &lt;branch&gt; #下载代码及快速合并
 $ git push &lt;remote&gt; &lt;branch&gt; #上传代码及快速合并
 $ git push &lt;remote&gt; :&lt;branch/tag-name&gt; #删除远程分支或标签
 $ git push --tags #上传所有标签
-&lt;/pre&gt;</description>
+&lt;/pre&gt;
+</description>
         </item>
         
         <item>
             <title>MyISAM 表级锁</title>
             <link>Homepage link/articles/3-post.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
             <guid>Homepage link/articles/3-post.html</guid>
-            <author>GugoTianFei@gmail.com 王天飞</author>
+            <author>GugoTianFei@gmail.com monster</author>
             <pubDate>Thu, 07 Aug 2014 00:00:00 +0800</pubDate>
             <description>&lt;h1 id=&quot;查询表级锁争用情况&quot;&gt;查询表级锁争用情况&lt;/h1&gt;
 &lt;p&gt;可以通过检查table_locks_waited和table_locks_immediate状态变量来分析系统上的表锁定争夺：
@@ -112,7 +117,7 @@ $ git push --tags #上传所有标签
 2 rows in set (0.00 sec))
 &lt;/pre&gt;
 &lt;h1 id=&quot;mysql表级锁的锁模式&quot;&gt;MySQL表级锁的锁模式&lt;/h1&gt;
-&lt;p&gt;&lt;img src=&quot;http://static.oschina.net/uploads/space/2014/0326/115850_MAe5_265452.jpg&quot; alt=&quot;MyISAM锁模式&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/table-lock-mode.jpg&quot; alt=&quot;MyISAM锁模式&quot;&gt;&lt;/p&gt;
 &lt;h1 id=&quot;并发插入（concurrent-inserts-&quot;&gt;并发插入（Concurrent Inserts)&lt;/h1&gt;
 &lt;p&gt;上文提到过MyISAM表的读和写是串行的，但这是就总体而言的。在一定条件下，MyISAM表也支持查询和插入操作的并发进行，也就是这种情况：S1获得 read local锁,S2能在表的尾部插入数据， 当然这得涉及一个变量。&lt;/p&gt;
 &lt;p&gt;###MyISAM存储引擎有一个系统变量concurrent_insert，专门用以控制其并发插入的行为，其值分别可以为0、1或2。&lt;/p&gt;
@@ -135,10 +140,10 @@ $ git push --tags #上传所有标签
             <title>vi编辑器使用</title>
             <link>Homepage link/articles/4-post.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
             <guid>Homepage link/articles/4-post.html</guid>
-            <author>GugoTianFei@gmail.com 王天飞</author>
+            <author>GugoTianFei@gmail.com monster</author>
             <pubDate>Thu, 07 Aug 2014 00:00:00 +0800</pubDate>
             <description>&lt;h1 id=&quot;vi的基本概念&quot;&gt;vi的基本概念&lt;/h1&gt;
-&lt;p&gt;###基本上vi可以分为三种状态&lt;/p&gt;
+&lt;h3 id=&quot;基本上vi可以分为三种状态&quot;&gt;基本上vi可以分为三种状态&lt;/h3&gt;
 &lt;pre&gt;1. 命令行模式command mode）
 &lt;/pre&gt;&lt;p&gt;　　控制屏幕光标的移动，字符、字或行的删除，移动复制某区段及进入Insert mode下，或者到 last line mode。&lt;/p&gt;
 &lt;pre&gt;2. 插入模式（Insert mode）
@@ -146,7 +151,7 @@ $ git push --tags #上传所有标签
 &lt;pre&gt;3. 底行模式（last line mode）
 &lt;/pre&gt;&lt;p&gt;　　将文件保存或退出vi，也可以设置编辑环境，如寻找字符串、列出行号……等。&lt;/p&gt;
 &lt;pre&gt;不过一般我们在使用时把vi简化成两个模式，就是将底行模式（last line mode）也算入命令行模式command mode）。
-&lt;/pre&gt;&lt;p&gt;###模式间切换&lt;/p&gt;
+&lt;/pre&gt;&lt;h3 id=&quot;模式间切换&quot;&gt;模式间切换&lt;/h3&gt;
 &lt;pre&gt;1. 命令行模式-&gt;底行模式(Shitf+:)，命令行模式-&gt;插入模式(i)
 2. 底行模式-&gt;命令行模式(Esc)，底行模式-&gt;插入模式(先进入命令模式，再进入插入模式)
 3. 插入模式-&gt;命令行模式(Esc)，插入模式-&gt;底行模式(先进入命令行模式，再进入底行模式)
@@ -240,7 +245,7 @@ $ git push --tags #上传所有标签
             <title>反向代理及Nginx配置</title>
             <link>Homepage link/articles/reverse-proxy-nginx.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
             <guid>Homepage link/articles/reverse-proxy-nginx.html</guid>
-            <author>GugoTianFei@gmail.com 王天飞</author>
+            <author>GugoTianFei@gmail.com monster</author>
             <pubDate>Thu, 26 Apr 2018 00:00:00 +0800</pubDate>
             <description>&lt;h4 id=&quot;什么是代理&quot;&gt;什么是代理&lt;/h4&gt;
 &lt;p&gt;A与B能直接进行消息传递，这时C插在A与B之间，充当A与B的消息中间站。C就是代理。&lt;/p&gt;

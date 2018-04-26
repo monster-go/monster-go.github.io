@@ -3,11 +3,11 @@
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="description" content="Hellot意为向你问好或打个招呼！坚持写码，保持一颗平常心，不搞文艺，不做屌丝。"/>
-        <meta name="keywords" content="Hello To,招呼,知识积累、快乐分享,MySQL,PHP,Nginx,数据结构,C++"/>
-        <meta name="author" content="王天飞"/>
+        <meta name="description" content="坚持写码，保持一颗平常心，不搞文艺，不做屌丝。"/>
+        <meta name="keywords" content="Monster-big,招呼,知识积累、快乐分享,MySQL,PHP,Nginx,数据结构,C++"/>
+        <meta name="author" content="monster-big"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-        <title>HelloTo - MyISAM 表级锁
+        <title>Monster-big blog - MyISAM 表级锁
 </title>
         <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
         <link rel="stylesheet" href="/assets/vendor/prettify-night.css"/>
@@ -19,7 +19,7 @@
     <body onload="prettyPrint()">
     <div id="header">
         <div id="header-inner">
-            <div id="title"><a href="/">HelloTo</a></div>
+            <div id="title"><a href="/">Monster-big blog</a></div>
             <div id="subtitle">Keep coding,Keep heart</div>
         </div>
     </div>
@@ -43,7 +43,7 @@
             <a href="/articles/3-post.html">MyISAM 表级锁</a>
         </div>
         <div id="article-meta">
-            作者 王天飞 | 发布于 2014-08-07
+            作者 monster | 发布于 2014-08-07
         </div>
         <div id="article-tags">
         
@@ -66,7 +66,7 @@
 2 rows in set (0.00 sec))
 </pre>
 <h1 id="mysql表级锁的锁模式">MySQL表级锁的锁模式</h1>
-<p><img src="http://static.oschina.net/uploads/space/2014/0326/115850_MAe5_265452.jpg" alt="MyISAM锁模式"></p>
+<p><img src="/assets/images/table-lock-mode.jpg" alt="MyISAM锁模式"></p>
 <h1 id="并发插入（concurrent-inserts-">并发插入（Concurrent Inserts)</h1>
 <p>上文提到过MyISAM表的读和写是串行的，但这是就总体而言的。在一定条件下，MyISAM表也支持查询和插入操作的并发进行，也就是这种情况：S1获得 read local锁,S2能在表的尾部插入数据， 当然这得涉及一个变量。</p>
 <p>###MyISAM存储引擎有一个系统变量concurrent_insert，专门用以控制其并发插入的行为，其值分别可以为0、1或2。</p>
@@ -89,7 +89,7 @@
 </div>
         <div id="footer">
             <div id="footer-inner">
-                <p id="copyright">Copyright (c) 2014-2014 Hello To</p>
+                <p id="copyright">Copyright (c) 2014-2014 monster-big</p>
             </div>
         </div>
         <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">

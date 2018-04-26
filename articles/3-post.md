@@ -16,8 +16,7 @@ mysql> show status like 'table%';
 
 MySQL表级锁的锁模式
 ==================
-
-![MyISAM锁模式](http://static.oschina.net/uploads/space/2014/0326/115850_MAe5_265452.jpg)
+![MyISAM锁模式](/assets/images/table-lock-mode.jpg)
 
 并发插入（Concurrent Inserts)
 =============================
