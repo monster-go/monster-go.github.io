@@ -1,0 +1,44 @@
+- id: 1-post
+  title: SSH(Secure SHell protocol) 安全外壳协议
+  postedOn: !!str 2014-08-06
+  author: 鸟哥私房菜
+  tags:
+    - Linux
+    - SSH
+    - 协议
+  abstract:  由于先前的远程联机服务器大多是明码，而且协议也有些资安问题，因此后来就有 SSH 这个协议来取代上述这些咚咚。 那么 SSH 是什么呢？它有什么特异功能？简单的来说，SSH 是 Secure SHell protocol 的简写 (安全的壳程序协议)，它可以透过数据封包加密技术，将等待传输的封包加密后再传输到网络上， 因此，数据讯息当然就比较安全啰！这个 SSH 可以用来取代较不安全的 finger, R Shell (rcp, rlogin, rsh 等), talk 及 telnet 等联机模式。底下我们将先简介一下 SSH 的联机模式，来说明为什么 SSH 的数据讯息会比较安全呢！
+
+- id: 2-post
+  title: Git 常用命令速查表
+  postedOn: !!str 2014-08-07
+  author: 王天飞
+  tags:
+    - Linux
+    - Git
+  abstract: Git 是由 Linux 之父 Linus Tovalds 为了更好地管理linux内核开发而创立的分布式版本控制／软件配置管理软件。目前支持 Windows 、MacOSX 、Linux 等多种主流平台，特点为快速、高效及易于使用。
+
+- id: 3-post
+  title: MyISAM 表级锁
+  postedOn: !!str 2014-08-07
+  author: 王天飞
+  tags:
+    - Mysql
+    - MyISAM
+  abstract: 表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高,并发度最低。
+
+- id: 4-post
+  title: vi编辑器使用
+  postedOn: !!str 2014-08-07
+  author: 王天飞
+  tags:
+    - Linux
+    - Vi
+  abstract: 为熟悉使用vim,从网上摘了篇关于Vim文章。
+
+- id: reverse-proxy-nginx
+  title: 反向代理及Nginx配置
+  postedOn: !!str 2018-04-26
+  author: monster
+  tags:
+    - nginx
+  abstract: 什么是代理，如何去配置

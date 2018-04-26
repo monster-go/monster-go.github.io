@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="Hellot意为向你问好或打个招呼！坚持写码，保持一颗平常心，不搞文艺，不做屌丝。"/>
+        <meta name="keywords" content="Hello To,招呼,知识积累、快乐分享,MySQL,PHP,Nginx,数据结构,C++"/>
+        <meta name="author" content="王天飞"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>HelloTo - MyISAM 表级锁
+</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/prettify-night.css"/>
+        <link rel="stylesheet" href="/assets/themes/default/main.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/prettify.js"></script>
+        
+    </head>
+    <body onload="prettyPrint()">
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">HelloTo</a></div>
+            <div id="subtitle">Keep coding,Keep heart</div>
+        </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="article-title">
+            <a href="/articles/3-post.html">MyISAM 表级锁</a>
+        </div>
+        <div id="article-meta">
+            作者 王天飞 | 发布于 2014-08-07
+        </div>
+        <div id="article-tags">
+        
+        <a class="tag" href="/tag.html#Mysql">Mysql</a>
+        
+        <a class="tag" href="/tag.html#MyISAM">MyISAM</a>
+        
+        </div>
+        <div id="article-content">
+            <h1 id="查询表级锁争用情况">查询表级锁争用情况</h1>
+<p>可以通过检查table_locks_waited和table_locks_immediate状态变量来分析系统上的表锁定争夺：
+如果Table_locks_waited的值比较高，则说明存在着较严重的表级锁争用情况。</p>
+<pre class="prettyprint linenums lang-mysql">mysql&gt; show status like &#39;table%&#39;;
++-----------------------+-------+
+| Variable_name         | Value |
++-----------------------+-------+
+| Table_locks_immediate | 2979  |
+| Table_locks_waited    | 0     |
++-----------------------+-------+
+2 rows in set (0.00 sec))
+</pre>
+<h1 id="mysql表级锁的锁模式">MySQL表级锁的锁模式</h1>
+<p><img src="http://static.oschina.net/uploads/space/2014/0326/115850_MAe5_265452.jpg" alt="MyISAM锁模式"></p>
+<h1 id="并发插入（concurrent-inserts-">并发插入（Concurrent Inserts)</h1>
+<p>上文提到过MyISAM表的读和写是串行的，但这是就总体而言的。在一定条件下，MyISAM表也支持查询和插入操作的并发进行，也就是这种情况：S1获得 read local锁,S2能在表的尾部插入数据， 当然这得涉及一个变量。</p>
+<p>###MyISAM存储引擎有一个系统变量concurrent_insert，专门用以控制其并发插入的行为，其值分别可以为0、1或2。</p>
+<ul>
+<li>当concurrent_insert设置为0时，不允许并发插入。</li>
+<li>当concurrent_insert设置为1时，如果MyISAM表中没有空洞（即表的中间没有被删除的行），MyISAM允许在一个进程读表的同时，另一个进程从表尾插入记录。这也是MySQL的默认设置。</li>
+<li>当concurrent_insert设置为2时，无论MyISAM表中有没有空洞，都允许在表尾并发插入记录。</li>
+</ul>
+<h1 id="myisam的锁调度">MyISAM的锁调度</h1>
+<p>MyISAM存储引擎的读锁和写锁是互斥的，读写操作是串行的。那么，一个进程请求某个MyISAM表的读锁，同时另一个进程也请求同一表的写锁，MySQL如何处理呢？答案是写进程先获得锁。不仅如此，即使读请求先到锁等待队列，写请求后到，写锁也会插到读锁请求之前！这是因为MySQL认为写请求一般比读请求要重要。这也正是MyISAM表不太适合于有大量更新操作和查询操作应用的原因，因为，大量的更新操作会造成查询操作很难获得读锁，从而可能永远阻塞。这种情况有时可能会变得非常糟糕！幸好我们可以通过一些设置来调节MyISAM的调度行为。</p>
+<ul>
+<li>通过指定启动参数low-priority-updates，使MyISAM引擎默认给予读请求以优先的权利。</li>
+<li>通过执行命令SET LOW_PRIORITY_UPDATES=1，使该连接发出的更新请求优先级降低。</li>
+<li>通过指定INSERT、UPDATE、DELETE语句的LOW_PRIORITY属性，降低该语句的优先级。</li>
+</ul>
+
+        </div>
+        
+    </div>
+</div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2014-2014 Hello To</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+    </body>
+</html>
+

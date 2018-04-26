@@ -1,0 +1,30 @@
+title: HelloTo
+subtitle: Keep coding,Keep heart
+link: Homepage link
+meta:
+  description: Hellot意为向你问好或打个招呼！坚持写码，保持一颗平常心，不搞文艺，不做屌丝。
+  keywords: !!seq
+    - Hello To
+    - 招呼
+    - 知识积累、快乐分享
+    - MySQL
+    - PHP
+    - Nginx
+    - 数据结构
+    - C++
+  author: 王天飞
+master:
+  name: 王天飞
+  about: 写代码的人打一专业词(是人不是猿)
+  email: GugoTianFei@gmail.com
+rss:
+  title: HelloT 博客
+  desc: 工作经验积累
+  lang: zh-cn
+  max: 10
+copyright:
+  owner: Hello To
+  beginYear: 2014
+  endYear: 2014
+theme: default
+codetheme: night

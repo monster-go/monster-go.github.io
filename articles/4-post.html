@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="Hellot意为向你问好或打个招呼！坚持写码，保持一颗平常心，不搞文艺，不做屌丝。"/>
+        <meta name="keywords" content="Hello To,招呼,知识积累、快乐分享,MySQL,PHP,Nginx,数据结构,C++"/>
+        <meta name="author" content="王天飞"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>HelloTo - vi编辑器使用
+</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/prettify-night.css"/>
+        <link rel="stylesheet" href="/assets/themes/default/main.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/prettify.js"></script>
+        
+    </head>
+    <body onload="prettyPrint()">
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">HelloTo</a></div>
+            <div id="subtitle">Keep coding,Keep heart</div>
+        </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="article-title">
+            <a href="/articles/4-post.html">vi编辑器使用</a>
+        </div>
+        <div id="article-meta">
+            作者 王天飞 | 发布于 2014-08-07
+        </div>
+        <div id="article-tags">
+        
+        <a class="tag" href="/tag.html#Linux">Linux</a>
+        
+        <a class="tag" href="/tag.html#Vi">Vi</a>
+        
+        </div>
+        <div id="article-content">
+            <h1 id="vi的基本概念">vi的基本概念</h1>
+<p>###基本上vi可以分为三种状态</p>
+<pre>1. 命令行模式command mode）
+</pre><p>　　控制屏幕光标的移动，字符、字或行的删除，移动复制某区段及进入Insert mode下，或者到 last line mode。</p>
+<pre>2. 插入模式（Insert mode）
+</pre><p>　　只有在Insert mode下，才可以做文字输入，按「ESC」键可回到命令行模式。</p>
+<pre>3. 底行模式（last line mode）
+</pre><p>　　将文件保存或退出vi，也可以设置编辑环境，如寻找字符串、列出行号……等。</p>
+<pre>不过一般我们在使用时把vi简化成两个模式，就是将底行模式（last line mode）也算入命令行模式command mode）。
+</pre><p>###模式间切换</p>
+<pre>1. 命令行模式-&gt;底行模式(Shitf+:)，命令行模式-&gt;插入模式(i)
+2. 底行模式-&gt;命令行模式(Esc)，底行模式-&gt;插入模式(先进入命令模式，再进入插入模式)
+3. 插入模式-&gt;命令行模式(Esc)，插入模式-&gt;底行模式(先进入命令行模式，再进入底行模式)
+</pre><h1 id="vi的基本操作">vi的基本操作</h1>
+<ol>
+<li>进入VI<ul>
+<li>vi filename :打开或新建文档，并将光标置于第一行首</li>
+<li>vi +n filename ：打开文档，并将光标置于第n行首</li>
+<li>vi + filename ：打开文档，并将光标置于最后一行首</li>
+<li>vi +/pattern filename：打开文档，并将光标置于第一个和pattern匹配的串处</li>
+<li>vi -r filename ：在上次正用vi编辑时发生系统崩溃，恢复filename</li>
+<li>vi filename....filename ：打开多个文档，依次编辑</li>
+</ul>
+</li>
+<li><p>移动光标类命令</p>
+<ul>
+<li>space：光标右移一个字符</li>
+<li>Backspace：光标左移一个字符</li>
+<li>k或Ctrl+p：光标上移一行</li>
+<li>j或Ctrl+n ：光标下移一行</li>
+<li>Enter ：光标下移一行</li>
+<li>n+：光标下移n行</li>
+<li>n-：光标上移n行</li>
+<li>L ：光标移至屏幕最后行</li>
+<li>H ：光标移至屏幕第一行</li>
+<li>0：（注意是数字零）光标移至当前行首</li>
+<li>$：光标移至当前行尾 </li>
+</ul>
+</li>
+<li><p>屏幕翻滚类命令</p>
+<ul>
+<li>Ctrl+u：向文档首翻半屏</li>
+<li>Ctrl+d：向文档尾翻半屏</li>
+<li>Ctrl+f：向文档尾翻一屏</li>
+<li>Ctrl＋b: 向文档首翻一屏 </li>
+</ul>
+</li>
+<li><p>插入文本类命令</p>
+<ul>
+<li>i ：在光标前</li>
+<li>I ：在当前行首</li>
+<li>A：在当前行尾</li>
+<li>o：在当前行之下新开一行</li>
+</ul>
+</li>
+<li>替换命令<ul>
+<li>R：替换当前字符及其后的字符，直至按ESC键</li>
+</ul>
+</li>
+<li>删除命令<ul>
+<li>do：删至行首</li>
+<li>d$：删至行尾</li>
+<li>dd : 删除当前行</li>
+<li>ndd：删除当前行及其后n-1行</li>
+<li>Ctrl+u：删除输入方式下所输入的文本</li>
+</ul>
+</li>
+<li>复制命令<ul>
+<li>yy 复制光标当前行</li>
+<li>nyy 复制当前光标及以下的n行</li>
+</ul>
+</li>
+<li>搜索及替换命令<ul>
+<li>:/pattern：从光标开始处向文档尾搜索pattern</li>
+<li>:?pattern：从光标开始处向文档首搜索pattern</li>
+<li>n：在同一方向重复上一次搜索命令(结合 /pattern  ?pattern，命令行模式) </li>
+<li>：s/p1/p2/g：将当前行中任何p1均用p2替代</li>
+<li>：n1,n2s/p1/p2/g：将第n1至n2行中任何p1均用p2替代</li>
+<li>：g/p1/s//p2/g：将文档中任何p1均用p2替换</li>
+</ul>
+</li>
+<li>其他<ul>
+<li>set nu 显示行号</li>
+<li>p 粘贴</li>
+<li>u 取消操作</li>
+<li>：n1,n2 co n3：将n1行到n2行之间的内容拷贝到第n3行下</li>
+<li>：n1,n2 m n3：将n1行到n2行之间的内容移至到第n3行下</li>
+<li>：n1,n2 d ：将n1行到n2行之间的内容删除</li>
+<li>：w ：保存当前文档</li>
+<li>：e filename：打开文档filename进行编辑</li>
+<li>：x：保存当前文档并退出</li>
+<li>：q：退出vi</li>
+<li>：q!：不保存文档并退出vi</li>
+</ul>
+</li>
+</ol>
+
+        </div>
+        
+    </div>
+</div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2014-2014 Hello To</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+    </body>
+</html>
+

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>HelloT 博客</title>
+        <link>Homepage link</link>
+        <description>工作经验积累</description>
+        <lastBuildDate>Thu, 26 Apr 2018 11:47:54 +0800</lastBuildDate>
+        <language>zh-cn</language>
+        
+        <item>
+            <title>SSH(Secure SHell protocol) 安全外壳协议</title>
+            <link>Homepage link/articles/1-post.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
+            <guid>Homepage link/articles/1-post.html</guid>
+            <author>GugoTianFei@gmail.com 王天飞</author>
+            <pubDate>Wed, 06 Aug 2014 00:00:00 +0800</pubDate>
+            <description>&lt;h1 id=&quot;联机加密技术简介&quot;&gt;联机加密技术简介&lt;/h1&gt;
+&lt;pre&gt;什么是『数据加密』呢？简单的说，就是将人们看的懂得原始电子数据，经过一些运算，让这些数据变成没有意义的乱码 (至少对人类来说)，然后再让这个咚咚在网络上面传输，而当用户想要查阅这个数据时，再透过解密运算， 将这些咚咚反推出原始的电子数据。由于这些数据已经被重新处理过，所以，即使数据在因特网上被 cracker 监听而窃取，他们也不容易就推算得出来原始资料内容的。
+
+加解密运算的机制与技术非常多，我们这里不去讨论复杂的理论问题，只谈对我们比较有关的一些加解密概念而已。 目前常见的网络封包加密技术通常是藉由所谓的『非对称密钥系统』来处理的。 主要是透过两把不一样的公钥与私钥 (Public and Private Key) 来进行加密与解密的过程。由于这两把钥匙是提供加解密的功用， 所以在同一个方向的联机中，这两把钥匙当然是需要成对的！它的功用分别如下：
+1. 公钥 (public key)：提供给远程主机进行数据加密的行为，也就是说，大家都能取得你的公钥来将数据加密的意思；
+2. 私钥 (private key)：远程主机使用你的公钥加密的数据，在本地端就能够使用私钥来进行解密。由于私钥是这么的重要， 因此私钥是不能够外流的！只能保护在自己的主机上。
+
+由于每部主机都应该有自己的密钥 (公钥与私钥)，且公钥用来加密而私钥用来解密， 其中私钥不可外流。但因为网络联机是双向的，所以，每个人应该都要有对方的『公钥』才对！我们如果站在客户端的角度来看，那么，首先你必须要取得服务器端的公钥，然后将自己的公钥发送给服务器端， 最终在客户端上面的密钥会是『服务器的公钥加上客户端我自己的私钥』来组成的。目前 SSH 的协议版本有两种，分别是 version 1 与 version 2 ，其中 V2 由于加上了联机检测的机制， 可以避免联机期间被插入恶意的攻击码，因此比 V1 还要更加的安全。所以啰，请尽量使用 V2 版本即可，不要使用 V1 啰。 无论是哪种版本，都还是需要公私钥加密系统的，那么这些公钥与私钥是如何产生的呢？底下我们就来谈一谈啦！
+&lt;/pre&gt;&lt;h1 id=&quot;ssh-的联机行为简介&quot;&gt;SSH 的联机行为简介&lt;/h1&gt;
+&lt;pre&gt;我们可以将 ssh 服务器端与客户端的联机步骤如下：
+&lt;/pre&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;服务器建立公钥档： 每一次启动 sshd 服务时，该服务会主动去找 /etc/ssh/ssh_host* 的档案，若系统刚刚安装完成时，由于没有这些    公钥档案，因此 sshd 会主动去计算出这些需要的公钥档案，同时也会计算出服务器自己需要的私钥档；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;客户端主动联机要求： 若客户端想要联机到 ssh 服务器，则需要使用适当的客户端程序来联机，包括 ssh, pietty 等客户端程序；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;服务器传送公钥档给客户端： 接收到客户端的要求后，服务器便将第一个步骤取得的公钥档案传送给客户端使用 (此时应是明码传送，反    正公钥本来就是给大家使用的！)；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;客户端记录/比对服务器的公钥数据及随机计算自己的公私钥： 若客户端第一次连接到此服务器，则会将服务器的公钥数据记录到客户端的   用户家目录内的 ~/.ssh/known_hosts 。若是已经记录过该服务器的公钥数据，则客户端会去比对此次接收到的与之前的记录是否有差异。   若接受此公钥数据， 则开始计算客户端自己的公私钥数据；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;回传客户端的公钥数据到服务器端： 用户将自己的公钥传送给服务器。此时服务器：『具有服务器的私钥与客户端的公钥』，而客户端则    是： 『具有服务器的公钥以及客户端自己的私钥』，你会看到，在此次联机的服务器与客户端的密钥系统 (公钥+私钥) 并不一样，所以才   称为非对称式密钥系统喔。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;开始双向加解密： (1)服务器到客户端：服务器传送数据时，拿用户的公钥加密后送出。客户端接收后，用自己的私钥解密； (2)客户端到   服务器：客户端传送数据时，拿服务器的公钥加密后送出。服务器接收后，用服务器的私钥解密。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在上述的第 4 步骤中，客户端的密钥是随机运算产生于本次联机当中的，所以你这次的联机与下次的联机的密钥可能就会不一样啦！ 此外在客户端的用户家目录下的 ~/.ssh/known_hosts 会记录曾经联机过的主机的 public key ，用以确认我们是连接上正确的那部服务器。&lt;/p&gt;
+</description>
+        </item>
+        
+        <item>
+            <title>Git 常用命令速查表</title>
+            <link>Homepage link/articles/2-post.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
+            <guid>Homepage link/articles/2-post.html</guid>
+            <author>GugoTianFei@gmail.com 王天飞</author>
+            <pubDate>Thu, 07 Aug 2014 00:00:00 +0800</pubDate>
+            <description>&lt;h1 id=&quot;创建版本库&quot;&gt;创建版本库&lt;/h1&gt;
+&lt;pre&gt;$ git clone &lt;url&gt; #克隆远程版本库
+$ git init #初始化本地版本库
+&lt;/pre&gt;&lt;h1 id=&quot;修改和提交&quot;&gt;修改和提交&lt;/h1&gt;
+&lt;pre&gt;$ git status #查看状态
+$ git diff #查看变更内容
+$ git add . #跟踪所有改动过的文件
+$ git add &lt;file&gt; #跟踪指定的文件
+$ git mv &lt;old&gt; &lt;new&gt; #文件改名
+$ git rm &lt;file&gt; #删除文件
+$ git rm --cached &lt;file&gt; #停止跟踪文件但不删除
+$ git commit -m “commit message” #提交所有更新过的文件
+$ git commit --amend #修改最后一次提交
+&lt;/pre&gt;&lt;h1 id=&quot;查看提交历史&quot;&gt;查看提交历史&lt;/h1&gt;
+&lt;pre&gt;$ git log #查看提交历史
+
+$ git log -p &lt;file&gt; #查看指定文件的提交历史
+
+$ git blame &lt;file&gt; #以列表方式查看指定文件的提交历史
+&lt;/pre&gt;&lt;h1 id=&quot;撤消&quot;&gt;撤消&lt;/h1&gt;
+&lt;pre&gt;$ git reset --hard HEAD #撤消工作目录中所有未提交文件的修改内容
+$ git checkout HEAD &lt;file&gt; #撤消指定的未提交文件的修改内容
+$ git revert &lt;commit&gt; #撤消指定的提交
+&lt;/pre&gt;&lt;h1 id=&quot;分支与标签&quot;&gt;分支与标签&lt;/h1&gt;
+&lt;pre&gt;$ git branch #显示所有本地分支
+$ git checkout &lt;branch/tag&gt; #切换到指定分支或标签
+$ git branch &lt;new-branch&gt; #创建新分支
+$ git branch -d &lt;branch&gt; #删除本地分支
+$ git tag #列出所有本地标签
+$ git tag &lt;tagname&gt; #基于最新提交创建标签
+$ git tag -d &lt;tagname&gt; #删除标签
+&lt;/pre&gt;&lt;h1 id=&quot;合并与衍合&quot;&gt;合并与衍合&lt;/h1&gt;
+&lt;pre&gt;$ git merge &lt;branch&gt; #合并指定分支到当前分支
+$ git rebase &lt;branch&gt; #衍合指定分支到当前分支
+&lt;/pre&gt;&lt;h1 id=&quot;远程操作&quot;&gt;远程操作&lt;/h1&gt;
+&lt;pre&gt;$ git remote -v #查看远程版本库信息
+$ git remote show &lt;remote&gt; #查看指定远程版本库信息
+$ git remote add &lt;remote&gt; &lt;url&gt; #添加远程版本库
+$ git fetch &lt;remote&gt; #从远程库获取代码
+$ git pull &lt;remote&gt; &lt;branch&gt; #下载代码及快速合并
+$ git push &lt;remote&gt; &lt;branch&gt; #上传代码及快速合并
+$ git push &lt;remote&gt; :&lt;branch/tag-name&gt; #删除远程分支或标签
+$ git push --tags #上传所有标签
+&lt;/pre&gt;</description>
+        </item>
+        
+        <item>
+            <title>MyISAM 表级锁</title>
+            <link>Homepage link/articles/3-post.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
+            <guid>Homepage link/articles/3-post.html</guid>
+            <author>GugoTianFei@gmail.com 王天飞</author>
+            <pubDate>Thu, 07 Aug 2014 00:00:00 +0800</pubDate>
+            <description>&lt;h1 id=&quot;查询表级锁争用情况&quot;&gt;查询表级锁争用情况&lt;/h1&gt;
+&lt;p&gt;可以通过检查table_locks_waited和table_locks_immediate状态变量来分析系统上的表锁定争夺：
+如果Table_locks_waited的值比较高，则说明存在着较严重的表级锁争用情况。&lt;/p&gt;
+&lt;pre class=&quot;prettyprint linenums lang-mysql&quot;&gt;mysql&gt; show status like &#39;table%&#39;;
++-----------------------+-------+
+| Variable_name         | Value |
++-----------------------+-------+
+| Table_locks_immediate | 2979  |
+| Table_locks_waited    | 0     |
++-----------------------+-------+
+2 rows in set (0.00 sec))
+&lt;/pre&gt;
+&lt;h1 id=&quot;mysql表级锁的锁模式&quot;&gt;MySQL表级锁的锁模式&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;http://static.oschina.net/uploads/space/2014/0326/115850_MAe5_265452.jpg&quot; alt=&quot;MyISAM锁模式&quot;&gt;&lt;/p&gt;
+&lt;h1 id=&quot;并发插入（concurrent-inserts-&quot;&gt;并发插入（Concurrent Inserts)&lt;/h1&gt;
+&lt;p&gt;上文提到过MyISAM表的读和写是串行的，但这是就总体而言的。在一定条件下，MyISAM表也支持查询和插入操作的并发进行，也就是这种情况：S1获得 read local锁,S2能在表的尾部插入数据， 当然这得涉及一个变量。&lt;/p&gt;
+&lt;p&gt;###MyISAM存储引擎有一个系统变量concurrent_insert，专门用以控制其并发插入的行为，其值分别可以为0、1或2。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当concurrent_insert设置为0时，不允许并发插入。&lt;/li&gt;
+&lt;li&gt;当concurrent_insert设置为1时，如果MyISAM表中没有空洞（即表的中间没有被删除的行），MyISAM允许在一个进程读表的同时，另一个进程从表尾插入记录。这也是MySQL的默认设置。&lt;/li&gt;
+&lt;li&gt;当concurrent_insert设置为2时，无论MyISAM表中有没有空洞，都允许在表尾并发插入记录。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;myisam的锁调度&quot;&gt;MyISAM的锁调度&lt;/h1&gt;
+&lt;p&gt;MyISAM存储引擎的读锁和写锁是互斥的，读写操作是串行的。那么，一个进程请求某个MyISAM表的读锁，同时另一个进程也请求同一表的写锁，MySQL如何处理呢？答案是写进程先获得锁。不仅如此，即使读请求先到锁等待队列，写请求后到，写锁也会插到读锁请求之前！这是因为MySQL认为写请求一般比读请求要重要。这也正是MyISAM表不太适合于有大量更新操作和查询操作应用的原因，因为，大量的更新操作会造成查询操作很难获得读锁，从而可能永远阻塞。这种情况有时可能会变得非常糟糕！幸好我们可以通过一些设置来调节MyISAM的调度行为。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过指定启动参数low-priority-updates，使MyISAM引擎默认给予读请求以优先的权利。&lt;/li&gt;
+&lt;li&gt;通过执行命令SET LOW_PRIORITY_UPDATES=1，使该连接发出的更新请求优先级降低。&lt;/li&gt;
+&lt;li&gt;通过指定INSERT、UPDATE、DELETE语句的LOW_PRIORITY属性，降低该语句的优先级。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+        <item>
+            <title>vi编辑器使用</title>
+            <link>Homepage link/articles/4-post.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
+            <guid>Homepage link/articles/4-post.html</guid>
+            <author>GugoTianFei@gmail.com 王天飞</author>
+            <pubDate>Thu, 07 Aug 2014 00:00:00 +0800</pubDate>
+            <description>&lt;h1 id=&quot;vi的基本概念&quot;&gt;vi的基本概念&lt;/h1&gt;
+&lt;p&gt;###基本上vi可以分为三种状态&lt;/p&gt;
+&lt;pre&gt;1. 命令行模式command mode）
+&lt;/pre&gt;&lt;p&gt;　　控制屏幕光标的移动，字符、字或行的删除，移动复制某区段及进入Insert mode下，或者到 last line mode。&lt;/p&gt;
+&lt;pre&gt;2. 插入模式（Insert mode）
+&lt;/pre&gt;&lt;p&gt;　　只有在Insert mode下，才可以做文字输入，按「ESC」键可回到命令行模式。&lt;/p&gt;
+&lt;pre&gt;3. 底行模式（last line mode）
+&lt;/pre&gt;&lt;p&gt;　　将文件保存或退出vi，也可以设置编辑环境，如寻找字符串、列出行号……等。&lt;/p&gt;
+&lt;pre&gt;不过一般我们在使用时把vi简化成两个模式，就是将底行模式（last line mode）也算入命令行模式command mode）。
+&lt;/pre&gt;&lt;p&gt;###模式间切换&lt;/p&gt;
+&lt;pre&gt;1. 命令行模式-&gt;底行模式(Shitf+:)，命令行模式-&gt;插入模式(i)
+2. 底行模式-&gt;命令行模式(Esc)，底行模式-&gt;插入模式(先进入命令模式，再进入插入模式)
+3. 插入模式-&gt;命令行模式(Esc)，插入模式-&gt;底行模式(先进入命令行模式，再进入底行模式)
+&lt;/pre&gt;&lt;h1 id=&quot;vi的基本操作&quot;&gt;vi的基本操作&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;进入VI&lt;ul&gt;
+&lt;li&gt;vi filename :打开或新建文档，并将光标置于第一行首&lt;/li&gt;
+&lt;li&gt;vi +n filename ：打开文档，并将光标置于第n行首&lt;/li&gt;
+&lt;li&gt;vi + filename ：打开文档，并将光标置于最后一行首&lt;/li&gt;
+&lt;li&gt;vi +/pattern filename：打开文档，并将光标置于第一个和pattern匹配的串处&lt;/li&gt;
+&lt;li&gt;vi -r filename ：在上次正用vi编辑时发生系统崩溃，恢复filename&lt;/li&gt;
+&lt;li&gt;vi filename....filename ：打开多个文档，依次编辑&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;移动光标类命令&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;space：光标右移一个字符&lt;/li&gt;
+&lt;li&gt;Backspace：光标左移一个字符&lt;/li&gt;
+&lt;li&gt;k或Ctrl+p：光标上移一行&lt;/li&gt;
+&lt;li&gt;j或Ctrl+n ：光标下移一行&lt;/li&gt;
+&lt;li&gt;Enter ：光标下移一行&lt;/li&gt;
+&lt;li&gt;n+：光标下移n行&lt;/li&gt;
+&lt;li&gt;n-：光标上移n行&lt;/li&gt;
+&lt;li&gt;L ：光标移至屏幕最后行&lt;/li&gt;
+&lt;li&gt;H ：光标移至屏幕第一行&lt;/li&gt;
+&lt;li&gt;0：（注意是数字零）光标移至当前行首&lt;/li&gt;
+&lt;li&gt;$：光标移至当前行尾 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;屏幕翻滚类命令&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ctrl+u：向文档首翻半屏&lt;/li&gt;
+&lt;li&gt;Ctrl+d：向文档尾翻半屏&lt;/li&gt;
+&lt;li&gt;Ctrl+f：向文档尾翻一屏&lt;/li&gt;
+&lt;li&gt;Ctrl＋b: 向文档首翻一屏 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;插入文本类命令&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;i ：在光标前&lt;/li&gt;
+&lt;li&gt;I ：在当前行首&lt;/li&gt;
+&lt;li&gt;A：在当前行尾&lt;/li&gt;
+&lt;li&gt;o：在当前行之下新开一行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;替换命令&lt;ul&gt;
+&lt;li&gt;R：替换当前字符及其后的字符，直至按ESC键&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;删除命令&lt;ul&gt;
+&lt;li&gt;do：删至行首&lt;/li&gt;
+&lt;li&gt;d$：删至行尾&lt;/li&gt;
+&lt;li&gt;dd : 删除当前行&lt;/li&gt;
+&lt;li&gt;ndd：删除当前行及其后n-1行&lt;/li&gt;
+&lt;li&gt;Ctrl+u：删除输入方式下所输入的文本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;复制命令&lt;ul&gt;
+&lt;li&gt;yy 复制光标当前行&lt;/li&gt;
+&lt;li&gt;nyy 复制当前光标及以下的n行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;搜索及替换命令&lt;ul&gt;
+&lt;li&gt;:/pattern：从光标开始处向文档尾搜索pattern&lt;/li&gt;
+&lt;li&gt;:?pattern：从光标开始处向文档首搜索pattern&lt;/li&gt;
+&lt;li&gt;n：在同一方向重复上一次搜索命令(结合 /pattern  ?pattern，命令行模式) &lt;/li&gt;
+&lt;li&gt;：s/p1/p2/g：将当前行中任何p1均用p2替代&lt;/li&gt;
+&lt;li&gt;：n1,n2s/p1/p2/g：将第n1至n2行中任何p1均用p2替代&lt;/li&gt;
+&lt;li&gt;：g/p1/s//p2/g：将文档中任何p1均用p2替换&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;其他&lt;ul&gt;
+&lt;li&gt;set nu 显示行号&lt;/li&gt;
+&lt;li&gt;p 粘贴&lt;/li&gt;
+&lt;li&gt;u 取消操作&lt;/li&gt;
+&lt;li&gt;：n1,n2 co n3：将n1行到n2行之间的内容拷贝到第n3行下&lt;/li&gt;
+&lt;li&gt;：n1,n2 m n3：将n1行到n2行之间的内容移至到第n3行下&lt;/li&gt;
+&lt;li&gt;：n1,n2 d ：将n1行到n2行之间的内容删除&lt;/li&gt;
+&lt;li&gt;：w ：保存当前文档&lt;/li&gt;
+&lt;li&gt;：e filename：打开文档filename进行编辑&lt;/li&gt;
+&lt;li&gt;：x：保存当前文档并退出&lt;/li&gt;
+&lt;li&gt;：q：退出vi&lt;/li&gt;
+&lt;li&gt;：q!：不保存文档并退出vi&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        
+        <item>
+            <title>反向代理及Nginx配置</title>
+            <link>Homepage link/articles/reverse-proxy-nginx.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
+            <guid>Homepage link/articles/reverse-proxy-nginx.html</guid>
+            <author>GugoTianFei@gmail.com 王天飞</author>
+            <pubDate>Thu, 26 Apr 2018 00:00:00 +0800</pubDate>
+            <description>&lt;h4 id=&quot;什么是代理&quot;&gt;什么是代理&lt;/h4&gt;
+&lt;p&gt;A与B能直接进行消息传递，这时C插在A与B之间，充当A与B的消息中间站。C就是代理。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h4 id=&quot;什么是反向代理&quot;&gt;什么是反向代理&lt;/h4&gt;
+&lt;p&gt;代理有正向代理、反向代理。一张图让我们看下正向代理与反向代理的区别。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/reverse-proxy-1.jpg&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;正向代理：代理的对象是客户端；隐藏了真实的请求客户端；对server透明。&lt;/li&gt;
+&lt;li&gt;反向代理：代理的对象是服务端；隐藏了真实的服务端；对client透明。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如下图就是一个典型的反向代理例子：&lt;a href=&quot;http://www.baidu.com这台服务器就是一个代理服务器，把local用户的请求转发给真实的server端（server1、server2、server3）。这里反向代理服务器起到负载均衡作用。&quot;&gt;www.baidu.com这台服务器就是一个代理服务器，把local用户的请求转发给真实的server端（server1、server2、server3）。这里反向代理服务器起到负载均衡作用。&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/reverse-proxy-2.jpg&quot; alt=&quot;image&quot;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h4 id=&quot;nginx-反向代理配置&quot;&gt;Nginx 反向代理配置&lt;/h4&gt;
+&lt;p&gt;反向代理http模块、server模块完成&lt;/p&gt;
+&lt;pre class=&quot;prettyprint linenums lang-bash&quot;&gt;http {
+    #省略其他配置
+    #通过 upstream 实现反向代理，达到负载均衡作用
+    #负载均衡模块用于从”upstream”指令定义的后端主机列表中选取一台主机。nginx先使用负载均衡模块找到一台主机，再使用upstream模块实现与这台主机的交互，起到分发作用。
+    #weight表示权重
+    upstream web_pools {
+        ip_hash;#ip hash模块算法做负载均衡；没加这条指令，nginx会使用默认的round robin轮循负载均衡模块
+        server 192.168.1.102:80      weight=5  max_fails=3 fail_timeout=3;
+        server 192.168.1.103:80      weight=1  max_fails=3 fail_timeout=3;
+        server 192.168.1.104:80      backup;
+    }
+
+
+    #省略其他配置
+
+    #设定虚拟主机配置 
+    server {
+        listen       80;
+        server_name  wudong.com;
+        location / {
+            root   html;
+            index  index.html index.htm;
+            #该请求将调用 web_pools upstream 模块做反向代理
+            proxy_pass http://web_pools;
+            #以下是一些 proxy 的设置
+            proxy_set_header  Host  $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+    }
+
+}
+&lt;/pre&gt;
+&lt;hr&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
