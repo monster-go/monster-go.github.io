@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="坚持写码，保持一颗平常心，不搞文艺，不做屌丝。"/>
+        <meta name="keywords" content="Monster-big,招呼,知识积累、快乐分享,MySQL,PHP,Nginx,数据结构,C++"/>
+        <meta name="author" content="monster-big"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>Monster-big blog - crontab详解
+</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/prettify-night.css"/>
+        <link rel="stylesheet" href="/assets/themes/default/main.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/prettify.js"></script>
+        
+    </head>
+    <body onload="prettyPrint()">
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">Monster-big blog</a></div>
+            <div id="subtitle">Keep coding,Keep heart</div>
+        </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="article-title">
+            <a href="/articles/crontab.html">crontab详解</a>
+        </div>
+        <div id="article-meta">
+            作者 monster | 发布于 2018-12-05
+        </div>
+        <div id="article-tags">
+        
+        <a class="tag" href="/tag.html#linux cron">linux cron</a>
+        
+        </div>
+        <div id="article-content">
+            <h3 id="crontab计划任务详解">crontab计划任务详解</h3>
+<p>什么是crond ?用自己通俗的话来讲吧，在linux系统中有这么一个东西，它会每隔一段时间来到自己的目录中查看shell脚本，然后把shell脚本中的东西进行执行。  这个东西就是所说的crond服务，而我们要做的就是写好shell脚本放进这个crond服务的目录里面。</p>
+<hr>
+<h3 id="crontab-文件存放的目录">crontab 文件存放的目录</h3>
+<h4 id="-var-spool-cron-目录">/var/spool/cron  目录</h4>
+<p>这个目录主要是为了不同用户执行自己的脚本。</p>
+<p>这个目录中有以用户名为名称的文件夹，用户的shell脚本就放在自己用户名的文件夹中。这是为了不同的用户执行自己的脚本。一般contab -e 产生的脚本都放在这个目录中。</p>
+<h4 id="-etc-crond-目录、-etc-crontab文件">/etc/cron.d/ 目录、/etc/crontab文件</h4>
+<p><strong><em>特别注意：执行不同目录中的脚本都需要指明用户是谁。root就是一个。。。</em></strong></p>
+<p>这个文件主要是为了系统定时执行脚本而设置的。</p>
+<p>关于<code>/etc/crontab</code>文件关联的目录有 <code>/etc/cron.hourly</code> 、<code>/etc/cron.daily</code> <code>/etc/cron.weekly</code> 、 <code>/etc/cron.monthly</code>。这些目录存放了各个用户的脚本，按小时、天、星期、月分类存放于这些目录。</p>
+<hr>
+<h3 id="语法">语法</h3>
+<p><code>* * * * * [用户] command</code></p>
+<h4 id="参数含义">参数含义</h4>
+<table>
+<thead>
+<tr>
+<th>代表意义</th>
+<th>分钟</th>
+<th>小时</th>
+<th>日期</th>
+<th>月份</th>
+<th>周</th>
+<th>指令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数字范围</td>
+<td>0-59</td>
+<td>0-23</td>
+<td>1-31</td>
+<td>1-12</td>
+<td>0-7</td>
+<td>呀就指令啊</td>
+</tr>
+</tbody>
+</table>
+<h4 id="示例">示例</h4>
+<pre class="prettyprint linenums lang-shell">* * * *  root  run-parts  /etc/cron.hourly    #每分钟
+1 12 * * *  root  run-parts  /etc/cron.daily   #每12点的第一分钟
+1 12 * * 1  root  run-parts   /etc/cron.weekly  #每周一的12点1分
+1 12 5 * *  root  run-parts   /etc/cron.monthly #每月的5号12点1分
+
+</pre>
+<h4 id="秒-级别运行任务">秒级别运行任务</h4>
+<p>crontab 执行任务最小的时间纬度是分钟，可以利用<code>sleep</code>命令实现秒级别运行</p>
+<pre class="prettyprint linenums lang-shell">#每个10秒执行一次
+* * * * * vagrant sleep 10; date &gt;&gt; /var/log/cron.log
+* * * * * vagrant sleep 20; date &gt;&gt; /var/log/cron.log
+* * * * * vagrant sleep 30; date &gt;&gt; /var/log/cron.log
+* * * * * vagrant sleep 40; date &gt;&gt; /var/log/cron.log
+* * * * * vagrant sleep 50; date &gt;&gt; /var/log/cron.log
+</pre>
+<h4 id="crontab-指令">crontab 指令</h4>
+<pre class="prettyprint linenums lang-shell">service crond start  #启动crond服务
+service crond stop   #停止crond服务
+service crond restart  #重启crond服务
+
+#以下指令编辑/var/spool/cron目录文件
+crontab -e  #编辑crontab的工作内容
+crontab -l  #查询crontab的工作内容
+crontab -r  #移除所有的crontab内容
+crontab -u  #只有roo才能用此选项，意帮助其他使用者  建立/移除 crontab工作排成 如何编写crontab工作内容
+</pre>
+<h4 id="-示例说明">示例说明</h4>
+<pre class="prettyprint linenums lang-shell">0 12 * * * mail dreafly -s &quot;at 12:00&quot; &lt; /home/dreafly/dream.txt
+#每天的12点 做 (mail dreafly -s &quot;at 12:00&quot; &lt; /home/dreafly/dream.txt)这个事
+</pre>
+
+        </div>
+        
+    </div>
+</div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2014-2014 monster-big</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+    </body>
+</html>
+

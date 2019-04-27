@@ -4,8 +4,87 @@
         <title>monster-bi 博客</title>
         <link>Homepage link</link>
         <description>工作经验积累</description>
-        <lastBuildDate>Thu, 26 Apr 2018 17:35:52 +0800</lastBuildDate>
+        <lastBuildDate>Sat, 27 Apr 2019 20:04:16 +0800</lastBuildDate>
         <language>zh-cn</language>
+        
+        <item>
+            <title>crontab详解</title>
+            <link>Homepage link/articles/crontab.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
+            <guid>Homepage link/articles/crontab.html</guid>
+            <author>GugoTianFei@gmail.com monster</author>
+            <pubDate>Wed, 05 Dec 2018 00:00:00 +0800</pubDate>
+            <description>&lt;h3 id=&quot;crontab计划任务详解&quot;&gt;crontab计划任务详解&lt;/h3&gt;
+&lt;p&gt;什么是crond ?用自己通俗的话来讲吧，在linux系统中有这么一个东西，它会每隔一段时间来到自己的目录中查看shell脚本，然后把shell脚本中的东西进行执行。  这个东西就是所说的crond服务，而我们要做的就是写好shell脚本放进这个crond服务的目录里面。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;crontab-文件存放的目录&quot;&gt;crontab 文件存放的目录&lt;/h3&gt;
+&lt;h4 id=&quot;-var-spool-cron-目录&quot;&gt;/var/spool/cron  目录&lt;/h4&gt;
+&lt;p&gt;这个目录主要是为了不同用户执行自己的脚本。&lt;/p&gt;
+&lt;p&gt;这个目录中有以用户名为名称的文件夹，用户的shell脚本就放在自己用户名的文件夹中。这是为了不同的用户执行自己的脚本。一般contab -e 产生的脚本都放在这个目录中。&lt;/p&gt;
+&lt;h4 id=&quot;-etc-crond-目录、-etc-crontab文件&quot;&gt;/etc/cron.d/ 目录、/etc/crontab文件&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;特别注意：执行不同目录中的脚本都需要指明用户是谁。root就是一个。。。&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这个文件主要是为了系统定时执行脚本而设置的。&lt;/p&gt;
+&lt;p&gt;关于&lt;code&gt;/etc/crontab&lt;/code&gt;文件关联的目录有 &lt;code&gt;/etc/cron.hourly&lt;/code&gt; 、&lt;code&gt;/etc/cron.daily&lt;/code&gt; &lt;code&gt;/etc/cron.weekly&lt;/code&gt; 、 &lt;code&gt;/etc/cron.monthly&lt;/code&gt;。这些目录存放了各个用户的脚本，按小时、天、星期、月分类存放于这些目录。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;语法&quot;&gt;语法&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;* * * * * [用户] command&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&quot;参数含义&quot;&gt;参数含义&lt;/h4&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;代表意义&lt;/th&gt;
+&lt;th&gt;分钟&lt;/th&gt;
+&lt;th&gt;小时&lt;/th&gt;
+&lt;th&gt;日期&lt;/th&gt;
+&lt;th&gt;月份&lt;/th&gt;
+&lt;th&gt;周&lt;/th&gt;
+&lt;th&gt;指令&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;数字范围&lt;/td&gt;
+&lt;td&gt;0-59&lt;/td&gt;
+&lt;td&gt;0-23&lt;/td&gt;
+&lt;td&gt;1-31&lt;/td&gt;
+&lt;td&gt;1-12&lt;/td&gt;
+&lt;td&gt;0-7&lt;/td&gt;
+&lt;td&gt;呀就指令啊&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&quot;示例&quot;&gt;示例&lt;/h4&gt;
+&lt;pre class=&quot;prettyprint linenums lang-shell&quot;&gt;* * * *  root  run-parts  /etc/cron.hourly    #每分钟
+1 12 * * *  root  run-parts  /etc/cron.daily   #每12点的第一分钟
+1 12 * * 1  root  run-parts   /etc/cron.weekly  #每周一的12点1分
+1 12 5 * *  root  run-parts   /etc/cron.monthly #每月的5号12点1分
+
+&lt;/pre&gt;
+&lt;h4 id=&quot;秒-级别运行任务&quot;&gt;秒级别运行任务&lt;/h4&gt;
+&lt;p&gt;crontab 执行任务最小的时间纬度是分钟，可以利用&lt;code&gt;sleep&lt;/code&gt;命令实现秒级别运行&lt;/p&gt;
+&lt;pre class=&quot;prettyprint linenums lang-shell&quot;&gt;#每个10秒执行一次
+* * * * * vagrant sleep 10; date &gt;&gt; /var/log/cron.log
+* * * * * vagrant sleep 20; date &gt;&gt; /var/log/cron.log
+* * * * * vagrant sleep 30; date &gt;&gt; /var/log/cron.log
+* * * * * vagrant sleep 40; date &gt;&gt; /var/log/cron.log
+* * * * * vagrant sleep 50; date &gt;&gt; /var/log/cron.log
+&lt;/pre&gt;
+&lt;h4 id=&quot;crontab-指令&quot;&gt;crontab 指令&lt;/h4&gt;
+&lt;pre class=&quot;prettyprint linenums lang-shell&quot;&gt;service crond start  #启动crond服务
+service crond stop   #停止crond服务
+service crond restart  #重启crond服务
+
+#以下指令编辑/var/spool/cron目录文件
+crontab -e  #编辑crontab的工作内容
+crontab -l  #查询crontab的工作内容
+crontab -r  #移除所有的crontab内容
+crontab -u  #只有roo才能用此选项，意帮助其他使用者  建立/移除 crontab工作排成 如何编写crontab工作内容
+&lt;/pre&gt;
+&lt;h4 id=&quot;-示例说明&quot;&gt;示例说明&lt;/h4&gt;
+&lt;pre class=&quot;prettyprint linenums lang-shell&quot;&gt;0 12 * * * mail dreafly -s &quot;at 12:00&quot; &lt; /home/dreafly/dream.txt
+#每天的12点 做 (mail dreafly -s &quot;at 12:00&quot; &lt; /home/dreafly/dream.txt)这个事
+&lt;/pre&gt;
+</description>
+        </item>
         
         <item>
             <title>反向代理及Nginx配置</title>

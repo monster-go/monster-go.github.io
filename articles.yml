@@ -1,3 +1,12 @@
+- id: crontab
+  title: crontab详解
+  postedOn: !!str 2018-12-05
+  author: monster
+  tags:
+    - linux cron
+  abstract: 利用cron服务监控系统服务、定时跑后台脚本
+
+
 - id: reverse-proxy-nginx
   title: 反向代理及Nginx配置
   postedOn: !!str 2018-04-26
