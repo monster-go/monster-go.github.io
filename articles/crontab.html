@@ -64,7 +64,8 @@
 <p>关于<code>/etc/crontab</code>文件关联的目录有 <code>/etc/cron.hourly</code> 、<code>/etc/cron.daily</code> <code>/etc/cron.weekly</code> 、 <code>/etc/cron.monthly</code>。这些目录存放了各个用户的脚本，按小时、天、星期、月分类存放于这些目录。</p>
 <hr>
 <h3 id="语法">语法</h3>
-<p><code>* * * * * [用户] command</code></p>
+<pre class="prettyprint linenums lang-shell">* * * * * [用户] command
+</pre>
 <h4 id="参数含义">参数含义</h4>
 <table>
 <thead>
@@ -87,6 +88,7 @@
 <td>1-12</td>
 <td>0-7</td>
 <td>呀就指令啊</td>
+<td></td>
 </tr>
 </tbody>
 </table>

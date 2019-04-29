@@ -4,8 +4,68 @@
         <title>monster-bi 博客</title>
         <link>Homepage link</link>
         <description>工作经验积累</description>
-        <lastBuildDate>Sat, 27 Apr 2019 20:04:16 +0800</lastBuildDate>
+        <lastBuildDate>Mon, 29 Apr 2019 15:58:08 +0800</lastBuildDate>
         <language>zh-cn</language>
+        
+        <item>
+            <title>frp实现内网穿透</title>
+            <link>Homepage link/articles/frp.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
+            <guid>Homepage link/articles/frp.html</guid>
+            <author>GugoTianFei@gmail.com monster</author>
+            <pubDate>Fri, 26 Apr 2019 00:00:00 +0800</pubDate>
+            <description>&lt;h2 id=&quot;frp内网穿透&quot;&gt;frp内网穿透&lt;/h2&gt;
+&lt;p&gt;应用场景: 开发阶段调试支付回调; 对接第三方,需要提供公网接口,但系统并没上线.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/fatedier/frp&quot;&gt;github项目地址&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/fatedier/frp/releases&quot;&gt;代码下载地址&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/fatedier/frp/blob/master/README_zh.md#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B&quot;&gt;使用实例&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;通过自定义域名访问部署于内网的-web-服务&quot;&gt;通过自定义域名访问部署于内网的 web 服务&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;位于公网IP &lt;code&gt;65.49.10.110&lt;/code&gt;的服务器设置,配置文件 &lt;code&gt;frps.ini&lt;/code&gt;&lt;pre class=&quot;prettyprint linenums lang-shell&quot;&gt;# frps.ini
+[common]
+bind_port = 7000 #绑定端口
+vhost_http_port = 8080 #http监听的端口
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;内网服务器设置,配置文件 &lt;code&gt;frpc.ini&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&quot;prettyprint linenums lang-shell&quot;&gt;[common]
+server_addr = 65.49.10.110 #指定服务端所在的公网IP
+server_port = 7000 #绑定端口
+[web-api]
+type = http
+local_port = 1001 #8080端口映射到内网时nginx监听的端口
+custom_domains = www.api.com #域名,该域名必须指向65.49.10.110
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;启动frps : &lt;code&gt;./frps -c ./frps.ini&lt;/code&gt; , 启动frpc : &lt;code&gt;./frpc -c ./frpc.ini&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;通过浏览器访问 &lt;code&gt;http:// www.api.com:8080&lt;/code&gt; 即可访问到处于内网机器上的 web 服务&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&quot;没有域名情况下访问部署于内网的-web-服务&quot;&gt;没有域名情况下访问部署于内网的 web 服务&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;位于公网IP &lt;code&gt;65.49.10.110&lt;/code&gt;的服务器设置,配置文件 &lt;code&gt;frps.ini&lt;/code&gt;&lt;pre class=&quot;prettyprint linenums lang-shell&quot;&gt;# frps.ini
+[common]
+bind_port = 7000 #绑定端口
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;内网服务器设置,配置文件 &lt;code&gt;frpc.ini&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&quot;prettyprint linenums lang-shell&quot;&gt;[common]
+server_addr = 65.49.10.110 #指定服务端所在的公网IP
+server_port = 7000 #绑定端口
+[web-tcp]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 1001
+remote_port = 1001
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;启动frps : &lt;code&gt;./frps -c ./frps.ini&lt;/code&gt; , 启动frpc : &lt;code&gt;./frpc -c ./frpc.ini&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;通过浏览器访问 &lt;code&gt;http://65.49.10.110:1001&lt;/code&gt; 即可访问到处于内网机器上的 web 服务&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
         
         <item>
             <title>crontab详解</title>
@@ -26,7 +86,8 @@
 &lt;p&gt;关于&lt;code&gt;/etc/crontab&lt;/code&gt;文件关联的目录有 &lt;code&gt;/etc/cron.hourly&lt;/code&gt; 、&lt;code&gt;/etc/cron.daily&lt;/code&gt; &lt;code&gt;/etc/cron.weekly&lt;/code&gt; 、 &lt;code&gt;/etc/cron.monthly&lt;/code&gt;。这些目录存放了各个用户的脚本，按小时、天、星期、月分类存放于这些目录。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h3 id=&quot;语法&quot;&gt;语法&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;* * * * * [用户] command&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&quot;prettyprint linenums lang-shell&quot;&gt;* * * * * [用户] command
+&lt;/pre&gt;
 &lt;h4 id=&quot;参数含义&quot;&gt;参数含义&lt;/h4&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -49,6 +110,7 @@
 &lt;td&gt;1-12&lt;/td&gt;
 &lt;td&gt;0-7&lt;/td&gt;
 &lt;td&gt;呀就指令啊&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
