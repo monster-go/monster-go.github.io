@@ -33,10 +33,12 @@
 
 #### 示例
 ```shell
-* * * *  root  run-parts  /etc/cron.hourly    #每分钟
+* * * * *  root  run-parts  /etc/cron.hourly   #每分钟
+3 * * * *  root  run-parts  /etc/cron.hourly   #每小时的第三分钟,间隔60分钟
+*/3 * * * *  root  run-parts  /etc/cron.hourly   #每隔三分钟
 1 12 * * *  root  run-parts  /etc/cron.daily   #每12点的第一分钟
-1 12 * * 1  root  run-parts   /etc/cron.weekly  #每周一的12点1分
-1 12 5 * *  root  run-parts   /etc/cron.monthly #每月的5号12点1分
+1 12 * * 1  root  run-parts   /etc/cron.weekly  #每周一的12点第一分钟
+1 12 5 * *  root  run-parts   /etc/cron.monthly #每月的5号12点第一分钟
 
 ```
 
