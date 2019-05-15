@@ -4,7 +4,7 @@
         <title>monster-bi 博客</title>
         <link>Homepage link</link>
         <description>工作经验积累</description>
-        <lastBuildDate>Mon, 29 Apr 2019 15:58:08 +0800</lastBuildDate>
+        <lastBuildDate>Wed, 15 May 2019 18:10:26 +0800</lastBuildDate>
         <language>zh-cn</language>
         
         <item>
@@ -115,10 +115,12 @@ remote_port = 1001
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h4 id=&quot;示例&quot;&gt;示例&lt;/h4&gt;
-&lt;pre class=&quot;prettyprint linenums lang-shell&quot;&gt;* * * *  root  run-parts  /etc/cron.hourly    #每分钟
+&lt;pre class=&quot;prettyprint linenums lang-shell&quot;&gt;* * * * *  root  run-parts  /etc/cron.hourly   #每分钟
+3 * * * *  root  run-parts  /etc/cron.hourly   #每小时的第三分钟,间隔60分钟
+*/3 * * * *  root  run-parts  /etc/cron.hourly   #每隔三分钟
 1 12 * * *  root  run-parts  /etc/cron.daily   #每12点的第一分钟
-1 12 * * 1  root  run-parts   /etc/cron.weekly  #每周一的12点1分
-1 12 5 * *  root  run-parts   /etc/cron.monthly #每月的5号12点1分
+1 12 * * 1  root  run-parts   /etc/cron.weekly  #每周一的12点第一分钟
+1 12 5 * *  root  run-parts   /etc/cron.monthly #每月的5号12点第一分钟
 
 &lt;/pre&gt;
 &lt;h4 id=&quot;秒-级别运行任务&quot;&gt;秒级别运行任务&lt;/h4&gt;
